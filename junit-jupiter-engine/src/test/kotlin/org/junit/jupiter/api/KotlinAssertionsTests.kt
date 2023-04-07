@@ -211,6 +211,46 @@ class KotlinAssertionsTests {
         assertMessageStartsWith(error, assertionMessage)
     }
 
+    @Test
+    fun `assertNotNull with compiler smart cast`() {
+        val nullableString: String? = "string"
+
+        assertNotNull(nullableString)
+        assertFalse(nullableString.isEmpty()) // smart cast to non nullable object
+    }
+
+    @Test
+    fun `assertNull with compiler smart cast`() {
+        val nullableString: String? = null
+
+        assertNull(nullableString)
+        // even safe call is not allowed, because compiler knows that string is always null
+        // nullableString?.isEmpty()
+    }
+
+    @Test
+    fun `assertThrows with value initialization in lambda`() {
+        val value: String
+
+        assertThrows<AssertionError> {
+            value = "string"
+            Assertions.fail("message")
+        }
+
+        assertEquals("string", value)
+    }
+
+    @Test
+    fun `assertDoesNotThrow with value initialization in lambda`() {
+        val value: Int
+
+        assertDoesNotThrow {
+            value = 10
+        }
+
+        assertEquals(10, value)
+    }
+
     companion object {
         fun assertExpectedExceptionTypes(
             multipleFailuresError: MultipleFailuresError,
