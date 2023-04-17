@@ -68,7 +68,7 @@ repository on GitHub.
   `AnnotationConsumer` interfaces.
 * New `AnnotationBasedArgumentConverter` that implements both `ArgumentConverter` and
   `AnnotationConsumer` interfaces.
-
+* Introduced kotlin contracts for kotlin assertion methods
 
 [[release-notes-5.10.0-M1-junit-vintage]]
 === JUnit Vintage
