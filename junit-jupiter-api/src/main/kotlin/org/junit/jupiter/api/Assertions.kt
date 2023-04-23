@@ -101,7 +101,7 @@ fun assertAll(heading: String?, vararg executables: () -> Unit) =
  * ```
  * @see Assertions.assertNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun assertNull(actual: Any?) {
     contract {
         returns() implies (actual == null)
@@ -122,7 +122,7 @@ fun assertNull(actual: Any?) {
  * ```
  * @see Assertions.assertNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun assertNull(actual: Any?, message: String) {
     contract {
         returns() implies (actual == null)
@@ -143,7 +143,7 @@ fun assertNull(actual: Any?, message: String) {
  * ```
  * @see Assertions.assertNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun assertNull(actual: Any?, messageSupplier: () -> String) {
     contract {
         returns() implies (actual == null)
@@ -166,7 +166,7 @@ fun assertNull(actual: Any?, messageSupplier: () -> String) {
  * ```
  * @see Assertions.assertNotNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun <T> assertNotNull(actual: T?): T {
     contract {
         returns() implies (actual != null)
@@ -188,7 +188,7 @@ fun <T> assertNotNull(actual: T?): T {
  * ```
  * @see Assertions.assertNotNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun <T> assertNotNull(actual: T?, message: String): T {
     contract {
         returns() implies (actual != null)
@@ -210,7 +210,7 @@ fun <T> assertNotNull(actual: T?, message: String): T {
  * ```
  * @see Assertions.assertNotNull
  */
-@API(since = "5.10", status = STABLE)
+@API(since = "5.10", status = EXPERIMENTAL)
 fun <T> assertNotNull(actual: T?, messageSupplier: () -> String): T {
     contract {
         returns() implies (actual != null)
