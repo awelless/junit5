@@ -42,9 +42,14 @@ repository on GitHub.
   methods of the former. Please refer to the
   <<../user-guide/index.adoc#launcher-api-launcher-interceptors-custom, User Guide>> for
   details.
-* Support for limiting the `max-pool-size-factor` for parallel execution via a configuration parameter.
-* The new `testfeed` details mode for `ConsoleLauncher` prints test execution events as
+* Support for limiting the `max-pool-size-factor` for parallel execution via a
+  configuration parameter.
+* New `testfeed` details mode for `ConsoleLauncher` that prints test execution events as
   they occur in a concise format.
+* The existing functionality of the `ConsoleLauncher` has been split into two subcommands:
+  `execute` for executing tests and `engines` for listing registered test engines.
+* A new `discover` subcommand has been added to the `ConsoleLauncher` to print the
+  discovered tests for the specified details mode without executing them.
 
 
 [[release-notes-5.10.0-M1-junit-jupiter]]
@@ -57,7 +62,10 @@ repository on GitHub.
 ==== Deprecations and Breaking Changes
 
 * The `dynamic` parallel execution strategy now allows the thread pool to be saturated by
-default.
+  default.
+* Implicit type conversion of boolean values like in `@CsvSource` is now stricter, only
+  allowing values `"true"` or `"false"` (case-insensitive), in order to make accidental
+  mistakes apparent, avoiding potential confusion.
 
 ==== New Features and Improvements
 
@@ -82,6 +90,14 @@ default.
   parameter to set the maximum pool size factor.
 * New `junit.jupiter.execution.parallel.config.dynamic.saturate` configuration
   parameter to disable pool saturation.
+* New `TempDirFactory` SPI for customizing how the `TempDirectory` extension creates
+  temporary directories. See the
+  <<../user-guide/index.adoc#writing-tests-built-in-extensions-TempDirectory, User Guide>>
+  for details.
+* If a non-static `@MethodSource` factory method is used with test instance per-method
+  lifecycle semantics, the exception thrown now informs the user that the factory method
+  must be `static` unless the test class is annotated with
+  `@TestInstance(Lifecycle.PER_CLASS)`.
 * Introduced kotlin contracts for kotlin assertion methods
 
 

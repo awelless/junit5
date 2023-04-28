@@ -10,12 +10,9 @@
 
 package org.junit.platform.console.options;
 
-import static org.junit.platform.console.options.CommandLineOptions.DEFAULT_DETAILS;
-import static org.junit.platform.console.options.CommandLineOptions.DEFAULT_DETAILS_NAME;
-import static org.junit.platform.console.options.CommandLineOptions.DEFAULT_THEME;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,34 +30,11 @@ import org.junit.platform.engine.discovery.UriSelector;
 
 import picocli.CommandLine;
 import picocli.CommandLine.ArgGroup;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.ParameterException;
-import picocli.CommandLine.ParseResult;
-import picocli.CommandLine.Spec;
 
-/**
- * @since 1.0
- */
-@Command(//
-		name = "ConsoleLauncher", //
-		abbreviateSynopsis = true, //
-		sortOptions = false, //
-		usageHelpWidth = 95, //
-		showAtFileInUsageHelp = true, //
-		usageHelpAutoWidth = true, //
-		description = "Launches the JUnit Platform for test discovery and execution.", //
-		footerHeading = "%n", //
-		footer = "For more information, please refer to the JUnit User Guide at%n" //
-				+ "@|underline https://junit.org/junit5/docs/current/user-guide/|@"//
-)
-class AvailableOptions {
+class TestDiscoveryOptionsMixin {
 
 	private static final String CP_OPTION = "cp";
-
-	@ArgGroup(validate = false, order = 1, heading = "%n@|bold COMMANDS|@%n%n")
-	CommandOptions commandOptions;
 
 	@ArgGroup(validate = false, order = 2, heading = "%n@|bold SELECTORS|@%n%n")
 	SelectorOptions selectorOptions;
@@ -71,33 +45,6 @@ class AvailableOptions {
 	@ArgGroup(validate = false, order = 4, heading = "%n@|bold RUNTIME CONFIGURATION|@%n%n")
 	RuntimeConfigurationOptions runtimeConfigurationOptions;
 
-	@ArgGroup(validate = false, order = 5, heading = "%n@|bold REPORTING|@%n%n")
-	ReportingOptions reportingOptions;
-
-	@ArgGroup(validate = false, order = 6, heading = "%n@|bold CONSOLE OUTPUT|@%n%n")
-	ConsoleOutputOptions consoleOutputOptions;
-
-	static class CommandOptions {
-
-		@Option(names = { "-h", "--help" }, usageHelp = true, description = "Display help information.")
-		private boolean helpRequested;
-
-		@Option(names = { "--h", "-help" }, help = true, hidden = true)
-		private boolean helpRequested2;
-
-		@Option(names = { "--list-tests" }, description = "List all observable tests.")
-		private boolean listTestsRequested;
-
-		@Option(names = { "--list-engines" }, description = "List all observable test engines.")
-		private boolean listEnginesRequested;
-
-		private void applyTo(CommandLineOptions result) {
-			result.setDisplayHelp(this.helpRequested || this.helpRequested2);
-			result.setListTests(this.listTestsRequested);
-			result.setListEngines(this.listEnginesRequested);
-		}
-	}
-
 	static class SelectorOptions {
 
 		@Option(names = { "--scan-classpath",
@@ -106,11 +53,11 @@ class AvailableOptions {
 						+ "entries supplied via -" + CP_OPTION + " (directories and JAR files) are scanned. " //
 						+ "Explicit classpath roots that are not on the classpath will be silently ignored. " //
 						+ "This option can be repeated.")
-		private List<Path> selectedClasspathEntries = new ArrayList<>();
+		private List<Path> selectedClasspathEntries;
 
 		@Option(names = { "-scan-class-path",
 				"-scan-classpath" }, converter = ClasspathEntriesConverter.class, arity = "0..1", hidden = true)
-		private List<Path> selectedClasspathEntries2 = new ArrayList<>();
+		private List<Path> selectedClasspathEntries2;
 
 		@Option(names = "--scan-modules", description = "Scan all resolved modules for test discovery.")
 		private boolean scanModulepath;
@@ -188,8 +135,11 @@ class AvailableOptions {
 				"-select-iteration" }, arity = "1", hidden = true, converter = SelectorConverter.Iteration.class)
 		private List<IterationSelector> selectedIterations2 = new ArrayList<>();
 
-		private void applyTo(ParseResult parseResult, CommandLineOptions result) {
-			result.setScanClasspath(parseResult.hasMatchedOption("scan-class-path")); // flag was specified
+		SelectorOptions() {
+		}
+
+		private void applyTo(TestDiscoveryOptions result) {
+			result.setScanClasspath(this.selectedClasspathEntries != null || this.selectedClasspathEntries2 != null); // flag was specified
 			result.setScanModulepath(this.scanModulepath || this.scanModulepath2);
 			result.setSelectedModules(merge(this.selectedModules, this.selectedModules2));
 			result.setSelectedClasspathEntries(merge(this.selectedClasspathEntries, this.selectedClasspathEntries2));
@@ -272,7 +222,7 @@ class AvailableOptions {
 		@Option(names = { "--E", "-exclude-engine" }, arity = "1", hidden = true)
 		private List<String> excludedEngines2 = new ArrayList<>();
 
-		private void applyTo(CommandLineOptions result) {
+		private void applyTo(TestDiscoveryOptions result) {
 			result.setIncludedClassNamePatterns(merge(this.includeClassNamePatterns, this.includeClassNamePatterns2));
 			result.setExcludedClassNamePatterns(merge(this.excludeClassNamePatterns, this.excludeClassNamePatterns2));
 			result.setIncludedPackages(merge(this.includePackages, this.includePackages2));
@@ -298,8 +248,8 @@ class AvailableOptions {
 		// Implementation note: the @Option annotation is on a setter method to allow validation.
 		private Map<String, String> configurationParameters = new LinkedHashMap<>();
 
-		@Spec
-		private CommandSpec spec;
+		@CommandLine.Spec
+		private CommandLine.Model.CommandSpec spec;
 
 		@Option(names = { "-config" }, arity = "1", hidden = true)
 		public void setConfigurationParameters2(Map<String, String> keyValuePairs) {
@@ -312,7 +262,7 @@ class AvailableOptions {
 		 * on the command line.
 		 *
 		 * @param map the key-value pairs to add
-		 * @throws picocli.CommandLine.ParameterException if the map already contains this key
+		 * @throws CommandLine.ParameterException if the map already contains this key
 		 * @see <a href="https://github.com/junit-team/junit5/issues/1308">#1308</a>
 		 */
 		@Option(names = "--config", paramLabel = "KEY=VALUE", arity = "1", description = "Set a configuration parameter for test discovery and execution. This option can be repeated.")
@@ -327,99 +277,21 @@ class AvailableOptions {
 		private void validateUnique(String key, String newValue) {
 			String existing = configurationParameters.get(key);
 			if (existing != null && !existing.equals(newValue)) {
-				throw new ParameterException(spec.commandLine(),
+				throw new CommandLine.ParameterException(spec.commandLine(),
 					String.format("Duplicate key '%s' for values '%s' and '%s'.", key, existing, newValue));
 			}
 		}
 
-		private void applyTo(CommandLineOptions result) {
+		private void applyTo(TestDiscoveryOptions result) {
 			result.setAdditionalClasspathEntries(merge(additionalClasspathEntries, additionalClasspathEntries2));
 			result.setConfigurationParameters(configurationParameters);
 		}
 	}
 
-	static class ReportingOptions {
-
-		@Option(names = "--fail-if-no-tests", description = "Fail and return exit status code 2 if no tests are found.")
-		private boolean failIfNoTests; // no single-dash equivalent: was introduced in 5.3-M1
-
-		@Option(names = "--reports-dir", paramLabel = "DIR", description = "Enable report output into a specified local directory (will be created if it does not exist).")
-		private Path reportsDir;
-
-		@Option(names = "-reports-dir", hidden = true)
-		private Path reportsDir2;
-
-		private void applyTo(CommandLineOptions result) {
-			result.setFailIfNoTests(this.failIfNoTests);
-			result.setReportsDir(choose(this.reportsDir, this.reportsDir2, null));
-		}
-	}
-
-	static class ConsoleOutputOptions {
-		@Option(names = "--disable-ansi-colors", description = "Disable ANSI colors in output (not supported by all terminals).")
-		private boolean disableAnsiColors;
-
-		@Option(names = "-disable-ansi-colors", hidden = true)
-		private boolean disableAnsiColors2;
-
-		@Option(names = "--color-palette", paramLabel = "FILE", description = "Specify a path to a properties file to customize ANSI style of output (not supported by all terminals).")
-		private Path colorPalette;
-		@Option(names = "-color-palette", hidden = true)
-		private Path colorPalette2;
-
-		@Option(names = "--single-color", description = "Style test output using only text attributes, no color (not supported by all terminals).")
-		private boolean singleColorPalette;
-		@Option(names = "-single-color", hidden = true)
-		private boolean singleColorPalette2;
-
-		@Option(names = "--disable-banner", description = "Disable print out of the welcome message.")
-		private boolean disableBanner;
-
-		@Option(names = "-disable-banner", hidden = true)
-		private boolean disableBanner2;
-
-		@Option(names = "--details", paramLabel = "MODE", defaultValue = DEFAULT_DETAILS_NAME, description = "Select an output details mode for when tests are executed. " //
-				+ "Use one of: ${COMPLETION-CANDIDATES}. If 'none' is selected, " //
-				+ "then only the summary and test failures are shown. Default: ${DEFAULT-VALUE}.")
-		private Details details = DEFAULT_DETAILS;
-
-		@Option(names = "-details", hidden = true, defaultValue = DEFAULT_DETAILS_NAME)
-		private Details details2 = DEFAULT_DETAILS;
-
-		@Option(names = "--details-theme", paramLabel = "THEME", description = "Select an output details tree theme for when tests are executed. "
-				+ "Use one of: ${COMPLETION-CANDIDATES}. Default is detected based on default character encoding.")
-		private Theme theme = DEFAULT_THEME;
-
-		@Option(names = "-details-theme", hidden = true)
-		private Theme theme2 = DEFAULT_THEME;
-
-		private void applyTo(CommandLineOptions result) {
-			result.setAnsiColorOutputDisabled(disableAnsiColors || disableAnsiColors2);
-			result.setColorPalettePath(choose(colorPalette, colorPalette2, null));
-			result.setSingleColorPalette(singleColorPalette || singleColorPalette2);
-			result.setBannerDisabled(disableBanner || disableBanner2);
-			result.setDetails(choose(details, details2, DEFAULT_DETAILS));
-			result.setTheme(choose(theme, theme2, DEFAULT_THEME));
-		}
-	}
-
-	AvailableOptions() {
-	}
-
-	CommandLine getParser() {
-		CommandLine result = new CommandLine(this);
-		result.setCaseInsensitiveEnumValuesAllowed(true);
-		result.setAtFileCommentChar(null); // for --select-method com.acme.Foo#m()
-		return result;
-	}
-
-	CommandLineOptions toCommandLineOptions(ParseResult parseResult) {
-		CommandLineOptions result = new CommandLineOptions();
-		if (commandOptions != null) {
-			this.commandOptions.applyTo(result);
-		}
+	TestDiscoveryOptions toTestDiscoveryOptions() {
+		TestDiscoveryOptions result = new TestDiscoveryOptions();
 		if (this.selectorOptions != null) {
-			this.selectorOptions.applyTo(parseResult, result);
+			this.selectorOptions.applyTo(result);
 		}
 		if (this.filterOptions != null) {
 			this.filterOptions.applyTo(result);
@@ -427,22 +299,12 @@ class AvailableOptions {
 		if (this.runtimeConfigurationOptions != null) {
 			this.runtimeConfigurationOptions.applyTo(result);
 		}
-		if (this.reportingOptions != null) {
-			this.reportingOptions.applyTo(result);
-		}
-		if (this.consoleOutputOptions != null) {
-			this.consoleOutputOptions.applyTo(result);
-		}
 		return result;
 	}
 
 	private static <T> List<T> merge(List<T> list1, List<T> list2) {
-		List<T> result = new ArrayList<>(list1);
-		result.addAll(list2);
+		List<T> result = new ArrayList<>(list1 == null ? Collections.emptyList() : list1);
+		result.addAll(list2 == null ? Collections.emptyList() : list2);
 		return result;
-	}
-
-	private static <T> T choose(T left, T right, T defaultValue) {
-		return left == right ? left : (left == defaultValue ? right : left);
 	}
 }

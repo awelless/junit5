@@ -47,7 +47,7 @@ dependencies {
 	testImplementation(libs.groovy4) {
 		because("it provides convenience methods to handle process output")
 	}
-	testImplementation(libs.bnd) {
+	testImplementation(libs.bndlib) {
 		because("parsing OSGi metadata")
 	}
 	testRuntimeOnly(libs.slf4j.julBinding) {
@@ -63,6 +63,7 @@ dependencies {
 	thirdPartyJars(libs.apiguardian)
 	thirdPartyJars(libs.hamcrest)
 	thirdPartyJars(libs.opentest4j)
+	thirdPartyJars(libs.jimfs)
 
 	antJars(platform(projects.junitBom))
 	antJars(libs.bundles.ant)
