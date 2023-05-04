@@ -50,6 +50,12 @@ repository on GitHub.
   `execute` for executing tests and `engines` for listing registered test engines.
 * A new `discover` subcommand has been added to the `ConsoleLauncher` to print the
   discovered tests for the specified details mode without executing them.
+* Improved error message for cyclic graphs detected during test discovery to be more
+  actionable.
+* Extracted `NamespacedHierarchicalStore` from JUnit Jupiter engine for reuse by other
+  test engines and their extensions.
+* New dry-run mode to simulate test execution without actually running tests. Please refer
+  to the <<../user-guide/index.adoc#launcher-api-dry-run-mode, User Guide>> for details.
 
 
 [[release-notes-5.10.0-M1-junit-jupiter]]
@@ -94,10 +100,9 @@ repository on GitHub.
   temporary directories. See the
   <<../user-guide/index.adoc#writing-tests-built-in-extensions-TempDirectory, User Guide>>
   for details.
-* If a non-static `@MethodSource` factory method is used with test instance per-method
-  lifecycle semantics, the exception thrown now informs the user that the factory method
-  must be `static` unless the test class is annotated with
-  `@TestInstance(Lifecycle.PER_CLASS)`.
+* If `@MethodSource` is used with a non-static factory method that should be `static`, the
+  exception thrown now provides the user a meaningful explanation of how to address the
+  problem.
 * Introduced kotlin contracts for kotlin assertion methods
 
 
