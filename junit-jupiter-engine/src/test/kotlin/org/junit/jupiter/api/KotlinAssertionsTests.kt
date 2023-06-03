@@ -216,7 +216,7 @@ class KotlinAssertionsTests {
         val nullableString: String? = "string"
 
         assertNotNull(nullableString)
-        assertFalse(nullableString.isEmpty()) // smart cast to non nullable object
+        assertFalse(nullableString.isEmpty()) // smart cast to a non nullable object
     }
 
     @Test
@@ -226,18 +226,6 @@ class KotlinAssertionsTests {
         assertNull(nullableString)
         // even safe call is not allowed, because compiler knows that string is always null
         // nullableString?.isEmpty()
-    }
-
-    @Test
-    fun `assertThrows with value initialization in lambda`() {
-        val value: String
-
-        assertThrows<AssertionError> {
-            value = "string"
-            Assertions.fail("message")
-        }
-
-        assertEquals("string", value)
     }
 
     @Test

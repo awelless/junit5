@@ -234,7 +234,7 @@ fun <T> assertNotNull(actual: T?, messageSupplier: () -> String): T {
  */
 inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable)
     }
 
     val throwable: Throwable? = try {
@@ -262,7 +262,7 @@ inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
  */
 inline fun <reified T : Throwable> assertThrows(message: String, executable: () -> Unit): T {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable)
     }
 
     return assertThrows({ message }, executable)
@@ -280,7 +280,7 @@ inline fun <reified T : Throwable> assertThrows(message: String, executable: () 
  */
 inline fun <reified T : Throwable> assertThrows(noinline message: () -> String, executable: () -> Unit): T {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable)
         callsInPlace(message, AT_MOST_ONCE)
     }
 
