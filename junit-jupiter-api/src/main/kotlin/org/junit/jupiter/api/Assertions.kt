@@ -32,6 +32,18 @@ fun fail(message: String?, throwable: Throwable? = null): Nothing =
 /**
  * @see Assertions.fail
  */
+@JvmName("fail_nonNullableLambda")
+fun fail(message: () -> String): Nothing {
+    contract {
+        callsInPlace(message)
+    }
+
+    return Assertions.fail<Nothing>(message)
+}
+
+/**
+ * @see Assertions.fail
+ */
 fun fail(message: (() -> String)?): Nothing =
     Assertions.fail<Nothing>(message)
 
