@@ -23,8 +23,7 @@ JUnit repository on GitHub.
 
 ==== New Features and Improvements
 
-* ❓
-
+* Introduced kotlin contracts for kotlin assertion methods
 
 [[release-notes-5.11.0-M1-junit-jupiter]]
 === JUnit Jupiter
