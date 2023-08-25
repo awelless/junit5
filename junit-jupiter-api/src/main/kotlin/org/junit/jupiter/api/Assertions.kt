@@ -234,6 +234,71 @@ fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
 /**
  * Example usage:
  * ```kotlin
+ * val string: Any = ...
+ *
+ * assertInstanceOf<String>(string)
+ *
+ * // compiler smart casts string to a String object
+ * assertTrue(string.isNotEmpty())
+ * ```
+ * @see Assertions.assertInstanceOf
+ */
+@API(since = "5.11", status = EXPERIMENTAL)
+inline fun <reified T : Any> assertInstanceOf(actual: Any) {
+    contract {
+        returns() implies (actual is T)
+    }
+
+    Assertions.assertInstanceOf(T::class.java, actual)
+}
+
+/**
+ * Example usage:
+ * ```kotlin
+ * val string: Any = ...
+ *
+ * assertInstanceOf<String>(string, "Should be a String")
+ *
+ * // compiler smart casts string to a String object
+ * assertTrue(string.isNotEmpty())
+ * ```
+ * @see Assertions.assertInstanceOf
+ */
+@API(since = "5.11", status = EXPERIMENTAL)
+inline fun <reified T : Any> assertInstanceOf(actual: Any, message: String) {
+    contract {
+        returns() implies (actual is T)
+    }
+
+    Assertions.assertInstanceOf(T::class.java, actual, message)
+}
+
+/**
+ * Example usage:
+ * ```kotlin
+ * val string: Any = ...
+ *
+ * assertInstanceOf<String>(string) { "Should be a String" }
+ *
+ * // compiler smart casts string to a String object
+ * assertTrue(string.isNotEmpty())
+ * ```
+ * @see Assertions.assertInstanceOf
+ */
+@API(since = "5.11", status = EXPERIMENTAL)
+inline fun <reified T : Any> assertInstanceOf(actual: Any, noinline messageSupplier: () -> String) {
+    contract {
+        returns() implies (actual is T)
+
+        callsInPlace(messageSupplier, AT_MOST_ONCE)
+    }
+
+    Assertions.assertInstanceOf(T::class.java, actual, messageSupplier)
+}
+
+/**
+ * Example usage:
+ * ```kotlin
  * val exception = assertThrows<IllegalArgumentException> {
  *     throw IllegalArgumentException("Talk to a duck")
  * }

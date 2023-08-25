@@ -229,6 +229,14 @@ class KotlinAssertionsTests {
     }
 
     @Test
+    fun `assertInstanceOf with compiler smart cast`() {
+        val string: Any = "string"
+
+        assertInstanceOf<String>(string)
+        assertFalse(string.isEmpty()) // smart cast to a String object
+    }
+
+    @Test
     fun `assertDoesNotThrow with value initialization in lambda`() {
         val value: Int
 
