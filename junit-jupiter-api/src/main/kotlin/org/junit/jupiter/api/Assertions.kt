@@ -244,7 +244,7 @@ fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
  * @see Assertions.assertInstanceOf
  */
 @API(since = "5.11", status = EXPERIMENTAL)
-inline fun <reified T : Any> assertInstanceOf(actual: Any) {
+inline fun <reified T : Any> assertInstanceOf(actual: Any?) {
     contract {
         returns() implies (actual is T)
     }
@@ -265,7 +265,7 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any) {
  * @see Assertions.assertInstanceOf
  */
 @API(since = "5.11", status = EXPERIMENTAL)
-inline fun <reified T : Any> assertInstanceOf(actual: Any, message: String) {
+inline fun <reified T : Any> assertInstanceOf(actual: Any?, message: String) {
     contract {
         returns() implies (actual is T)
     }
@@ -286,7 +286,7 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any, message: String) {
  * @see Assertions.assertInstanceOf
  */
 @API(since = "5.11", status = EXPERIMENTAL)
-inline fun <reified T : Any> assertInstanceOf(actual: Any, noinline messageSupplier: () -> String) {
+inline fun <reified T : Any> assertInstanceOf(actual: Any?, noinline messageSupplier: () -> String) {
     contract {
         returns() implies (actual is T)
 

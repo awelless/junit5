@@ -237,6 +237,15 @@ class KotlinAssertionsTests {
     }
 
     @Test
+    fun `assertInstanceOf with a null value`() {
+        val error = assertThrows<AssertionFailedError> {
+            assertInstanceOf<String>(null)
+        }
+
+        assertMessageStartsWith(error, "Unexpected null value")
+    }
+
+    @Test
     fun `assertDoesNotThrow with value initialization in lambda`() {
         val value: Int
 
