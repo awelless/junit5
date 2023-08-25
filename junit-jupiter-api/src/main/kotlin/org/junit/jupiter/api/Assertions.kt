@@ -179,13 +179,12 @@ fun assertNull(actual: Any?, messageSupplier: () -> String) {
  * @see Assertions.assertNotNull
  */
 @API(since = "5.10", status = EXPERIMENTAL)
-fun <T> assertNotNull(actual: T?): T {
+fun assertNotNull(actual: Any?) {
     contract {
         returns() implies (actual != null)
     }
 
     Assertions.assertNotNull(actual)
-    return actual!!
 }
 
 /**
@@ -201,13 +200,12 @@ fun <T> assertNotNull(actual: T?): T {
  * @see Assertions.assertNotNull
  */
 @API(since = "5.10", status = EXPERIMENTAL)
-fun <T> assertNotNull(actual: T?, message: String): T {
+fun assertNotNull(actual: Any?, message: String) {
     contract {
         returns() implies (actual != null)
     }
 
     Assertions.assertNotNull(actual, message)
-    return actual!!
 }
 
 /**
@@ -223,7 +221,7 @@ fun <T> assertNotNull(actual: T?, message: String): T {
  * @see Assertions.assertNotNull
  */
 @API(since = "5.10", status = EXPERIMENTAL)
-fun <T> assertNotNull(actual: T?, messageSupplier: () -> String): T {
+fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
     contract {
         returns() implies (actual != null)
 
@@ -231,7 +229,6 @@ fun <T> assertNotNull(actual: T?, messageSupplier: () -> String): T {
     }
 
     Assertions.assertNotNull(actual, messageSupplier)
-    return actual!!
 }
 
 /**
