@@ -237,6 +237,14 @@ class KotlinAssertionsTests {
     }
 
     @Test
+    fun `assertInstanceOf with compiler nullable smart cast`() {
+        val string: Any? = "string"
+
+        assertInstanceOf<String>(string)
+        assertFalse(string.isEmpty()) // smart cast to a non-null String object
+    }
+
+    @Test
     fun `assertInstanceOf with a null value`() {
         val error = assertThrows<AssertionFailedError> {
             assertInstanceOf<String>(null)
