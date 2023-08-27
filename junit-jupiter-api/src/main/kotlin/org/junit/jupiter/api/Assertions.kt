@@ -21,6 +21,7 @@ import java.util.function.Supplier
 import java.util.stream.Stream
 import kotlin.contracts.InvocationKind.AT_MOST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
+import kotlin.contracts.InvocationKind.UNKNOWN
 import kotlin.contracts.contract
 
 /**
@@ -35,7 +36,7 @@ fun fail(message: String?, throwable: Throwable? = null): Nothing =
 @JvmName("fail_nonNullableLambda")
 fun fail(message: () -> String): Nothing {
     contract {
-        callsInPlace(message)
+        callsInPlace(message, UNKNOWN)
     }
 
     return Assertions.fail<Nothing>(message)
@@ -308,7 +309,7 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?, noinline messageSupp
  */
 inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
     contract {
-        callsInPlace(executable)
+        callsInPlace(executable, UNKNOWN)
     }
 
     val throwable: Throwable? = try {
@@ -336,7 +337,7 @@ inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
  */
 inline fun <reified T : Throwable> assertThrows(message: String, executable: () -> Unit): T {
     contract {
-        callsInPlace(executable)
+        callsInPlace(executable, UNKNOWN)
     }
 
     return assertThrows({ message }, executable)
@@ -354,7 +355,7 @@ inline fun <reified T : Throwable> assertThrows(message: String, executable: () 
  */
 inline fun <reified T : Throwable> assertThrows(noinline message: () -> String, executable: () -> Unit): T {
     contract {
-        callsInPlace(executable)
+        callsInPlace(executable, UNKNOWN)
         callsInPlace(message, AT_MOST_ONCE)
     }
 
