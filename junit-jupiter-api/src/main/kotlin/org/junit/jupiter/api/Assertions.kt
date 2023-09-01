@@ -517,7 +517,7 @@ fun <R> assertTimeout(timeout: Duration, message: () -> String, executable: () -
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable, UNKNOWN)
     }
 
     return Assertions.assertTimeoutPreemptively(timeout, executable)
@@ -536,7 +536,7 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable: () -> R): R {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable, UNKNOWN)
     }
 
     return Assertions.assertTimeoutPreemptively(timeout, executable, message)
@@ -555,7 +555,7 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, message: () -> String, executable: () -> R): R {
     contract {
-        callsInPlace(executable, EXACTLY_ONCE)
+        callsInPlace(executable, UNKNOWN)
         callsInPlace(message, AT_MOST_ONCE)
     }
 
