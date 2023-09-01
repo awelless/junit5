@@ -105,12 +105,12 @@ fun assertAll(heading: String?, vararg executables: () -> Unit) =
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNull(string)
+ * assertNull(nullableString)
  *
- * // compiler won't allow even safe calls, since the string is always null
- * // string?.isNotEmpty()
+ * // compiler won't allow even safe calls, since the nullableString is always null
+ * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
  */
@@ -126,12 +126,12 @@ fun assertNull(actual: Any?) {
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNull(string, "Should be nullable")
+ * assertNull(nullableString, "Should be nullable")
  *
- * // compiler won't allow even safe calls, since the string is always null
- * // string?.isNotEmpty()
+ * // compiler won't allow even safe calls, since the nullableString is always null
+ * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
  */
@@ -147,12 +147,12 @@ fun assertNull(actual: Any?, message: String) {
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNull(string) { "Should be nullable" }
+ * assertNull(nullableString) { "Should be nullable" }
  *
- * // compiler won't allow even safe calls, since the string is always null
- * // string?.isNotEmpty()
+ * // compiler won't allow even safe calls, since the nullableString is always null
+ * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
  */
@@ -170,12 +170,12 @@ fun assertNull(actual: Any?, messageSupplier: () -> String) {
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNotNull(string)
+ * assertNotNull(nullableString)
  *
  * // compiler smart casts nullableString to a non-nullable object
- * assertTrue(string.isNotEmpty())
+ * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
  */
@@ -191,12 +191,12 @@ fun assertNotNull(actual: Any?) {
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNotNull(string, "Should be non-nullable")
+ * assertNotNull(nullableString, "Should be non-nullable")
  *
  * // compiler smart casts nullableString to a non-nullable object
- * assertTrue(string.isNotEmpty())
+ * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
  */
@@ -212,12 +212,12 @@ fun assertNotNull(actual: Any?, message: String) {
 /**
  * Example usage:
  * ```kotlin
- * val string: String? = ...
+ * val nullableString: String? = ...
  *
- * assertNotNull(string) { "Should be non-nullable" }
+ * assertNotNull(nullableString) { "Should be non-nullable" }
  *
  * // compiler smart casts nullableString to a non-nullable object
- * assertTrue(string.isNotEmpty())
+ * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
  */
@@ -235,12 +235,12 @@ fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
 /**
  * Example usage:
  * ```kotlin
- * val string: Any = ...
+ * val maybeString: Any = ...
  *
- * assertInstanceOf<String>(string)
+ * assertInstanceOf<String>(maybeString)
  *
- * // compiler smart casts string to a String object
- * assertTrue(string.isNotEmpty())
+ * // compiler smart casts maybeString to a String object
+ * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
  */
@@ -256,12 +256,12 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?) {
 /**
  * Example usage:
  * ```kotlin
- * val string: Any = ...
+ * val maybeString: Any = ...
  *
- * assertInstanceOf<String>(string, "Should be a String")
+ * assertInstanceOf<String>(maybeString, "Should be a String")
  *
- * // compiler smart casts string to a String object
- * assertTrue(string.isNotEmpty())
+ * // compiler smart casts maybeString to a String object
+ * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
  */
@@ -277,12 +277,12 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?, message: String) {
 /**
  * Example usage:
  * ```kotlin
- * val string: Any = ...
+ * val maybeString: Any = ...
  *
- * assertInstanceOf<String>(string) { "Should be a String" }
+ * assertInstanceOf<String>(maybeString) { "Should be a String" }
  *
- * // compiler smart casts string to a String object
- * assertTrue(string.isNotEmpty())
+ * // compiler smart casts maybeString to a String object
+ * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
  */
@@ -453,7 +453,7 @@ internal inline fun <R> evaluateAndWrap(executable: () -> R): ThrowingSupplier<R
  * }
  * ```
  * @see Assertions.assertTimeout
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeout(timeout: Duration, executable: () -> R): R {
@@ -472,7 +472,7 @@ fun <R> assertTimeout(timeout: Duration, executable: () -> R): R {
  * }
  * ```
  * @see Assertions.assertTimeout
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeout(timeout: Duration, message: String, executable: () -> R): R {
@@ -491,7 +491,7 @@ fun <R> assertTimeout(timeout: Duration, message: String, executable: () -> R): 
  * }
  * ```
  * @see Assertions.assertTimeout
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeout(timeout: Duration, message: () -> String, executable: () -> R): R {
@@ -511,7 +511,7 @@ fun <R> assertTimeout(timeout: Duration, message: () -> String, executable: () -
  * }
  * ```
  * @see Assertions.assertTimeoutPreemptively
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
@@ -530,7 +530,7 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
  * }
  * ```
  * @see Assertions.assertTimeoutPreemptively
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable: () -> R): R {
@@ -549,7 +549,7 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable
  * }
  * ```
  * @see Assertions.assertTimeoutPreemptively
- * @paramR the result of the [executable].
+ * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, message: () -> String, executable: () -> R): R {
