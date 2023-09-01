@@ -33,13 +33,14 @@ fun fail(message: String?, throwable: Throwable? = null): Nothing =
 /**
  * @see Assertions.fail
  */
+@API(since = "5.11", status = EXPERIMENTAL)
 @JvmName("fail_nonNullableLambda")
 fun fail(message: () -> String): Nothing {
     contract {
         callsInPlace(message, UNKNOWN)
     }
 
-    return Assertions.fail<Nothing>(message)
+    return Assertions.fail(message)
 }
 
 /**
