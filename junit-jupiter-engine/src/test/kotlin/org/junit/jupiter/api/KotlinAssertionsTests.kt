@@ -216,7 +216,7 @@ class KotlinAssertionsTests {
         val nullableString: String? = "string"
 
         assertNotNull(nullableString)
-        assertFalse(nullableString.isEmpty()) // smart cast to a non nullable object
+        assertFalse(nullableString.isEmpty()) // A smart cast to a non-nullable object.
     }
 
     @Test
@@ -224,7 +224,7 @@ class KotlinAssertionsTests {
         val nullableString: String? = null
 
         assertNull(nullableString)
-        // even safe call is not allowed, because compiler knows that string is always null
+        // Even safe call is not allowed because compiler knows that nullableString is always null.
         // nullableString?.isEmpty()
     }
 
@@ -233,7 +233,7 @@ class KotlinAssertionsTests {
         val string: Any = "string"
 
         assertInstanceOf<String>(string)
-        assertFalse(string.isEmpty()) // smart cast to a String object
+        assertFalse(string.isEmpty()) // A smart cast to a String object.
     }
 
     @Test
@@ -241,7 +241,7 @@ class KotlinAssertionsTests {
         val string: Any? = "string"
 
         assertInstanceOf<String>(string)
-        assertFalse(string.isEmpty()) // smart cast to a non-null String object
+        assertFalse(string.isEmpty()) // A smart cast to a non-nullable String object.
     }
 
     @Test

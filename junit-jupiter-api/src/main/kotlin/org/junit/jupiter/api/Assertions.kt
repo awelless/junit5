@@ -110,7 +110,7 @@ fun assertAll(heading: String?, vararg executables: () -> Unit) =
  *
  * assertNull(nullableString)
  *
- * // compiler won't allow even safe calls, since the nullableString is always null
+ * // The compiler won't allow even safe calls, since nullableString is always null.
  * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
@@ -131,7 +131,7 @@ fun assertNull(actual: Any?) {
  *
  * assertNull(nullableString, "Should be nullable")
  *
- * // compiler won't allow even safe calls, since the nullableString is always null
+ * // The compiler won't allow even safe calls, since nullableString is always null.
  * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
@@ -152,7 +152,7 @@ fun assertNull(actual: Any?, message: String) {
  *
  * assertNull(nullableString) { "Should be nullable" }
  *
- * // compiler won't allow even safe calls, since the nullableString is always null
+ * // The compiler won't allow even safe calls, since nullableString is always null.
  * // nullableString?.isNotEmpty()
  * ```
  * @see Assertions.assertNull
@@ -175,7 +175,7 @@ fun assertNull(actual: Any?, messageSupplier: () -> String) {
  *
  * assertNotNull(nullableString)
  *
- * // compiler smart casts nullableString to a non-nullable object
+ * // The compiler smart casts nullableString to a non-nullable object.
  * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
@@ -196,7 +196,7 @@ fun assertNotNull(actual: Any?) {
  *
  * assertNotNull(nullableString, "Should be non-nullable")
  *
- * // compiler smart casts nullableString to a non-nullable object
+ * // The compiler smart casts nullableString to a non-nullable object.
  * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
@@ -217,7 +217,7 @@ fun assertNotNull(actual: Any?, message: String) {
  *
  * assertNotNull(nullableString) { "Should be non-nullable" }
  *
- * // compiler smart casts nullableString to a non-nullable object
+ * // The compiler smart casts nullableString to a non-nullable object.
  * assertTrue(nullableString.isNotEmpty())
  * ```
  * @see Assertions.assertNotNull
@@ -240,7 +240,7 @@ fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
  *
  * assertInstanceOf<String>(maybeString)
  *
- * // compiler smart casts maybeString to a String object
+ * // The compiler smart casts maybeString to a String object.
  * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
@@ -261,7 +261,7 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?) {
  *
  * assertInstanceOf<String>(maybeString, "Should be a String")
  *
- * // compiler smart casts maybeString to a String object
+ * // The compiler smart casts maybeString to a String object.
  * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
@@ -282,7 +282,7 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?, message: String) {
  *
  * assertInstanceOf<String>(maybeString) { "Should be a String" }
  *
- * // compiler smart casts maybeString to a String object
+ * // The compiler smart casts maybeString to a String object.
  * assertTrue(maybeString.isNotEmpty())
  * ```
  * @see Assertions.assertInstanceOf
