@@ -21,7 +21,6 @@ import java.util.function.Supplier
 import java.util.stream.Stream
 import kotlin.contracts.InvocationKind.AT_MOST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
-import kotlin.contracts.InvocationKind.UNKNOWN
 import kotlin.contracts.contract
 
 /**
@@ -37,7 +36,7 @@ fun fail(message: String?, throwable: Throwable? = null): Nothing =
 @JvmName("fail_nonNullableLambda")
 fun fail(message: () -> String): Nothing {
     contract {
-        callsInPlace(message, UNKNOWN)
+        callsInPlace(message, EXACTLY_ONCE)
     }
 
     return Assertions.fail(message)
@@ -309,10 +308,6 @@ inline fun <reified T : Any> assertInstanceOf(actual: Any?, noinline messageSupp
  * @see Assertions.assertThrows
  */
 inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
-    contract {
-        callsInPlace(executable, UNKNOWN)
-    }
-
     val throwable: Throwable? = try {
         executable()
     } catch (caught: Throwable) {
@@ -336,13 +331,8 @@ inline fun <reified T : Throwable> assertThrows(executable: () -> Unit): T {
  * ```
  * @see Assertions.assertThrows
  */
-inline fun <reified T : Throwable> assertThrows(message: String, executable: () -> Unit): T {
-    contract {
-        callsInPlace(executable, UNKNOWN)
-    }
-
-    return assertThrows({ message }, executable)
-}
+inline fun <reified T : Throwable> assertThrows(message: String, executable: () -> Unit): T =
+    assertThrows({ message }, executable)
 
 /**
  * Example usage:
@@ -356,7 +346,6 @@ inline fun <reified T : Throwable> assertThrows(message: String, executable: () 
  */
 inline fun <reified T : Throwable> assertThrows(noinline message: () -> String, executable: () -> Unit): T {
     contract {
-        callsInPlace(executable, UNKNOWN)
         callsInPlace(message, AT_MOST_ONCE)
     }
 
@@ -515,13 +504,8 @@ fun <R> assertTimeout(timeout: Duration, message: () -> String, executable: () -
  * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
-fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
-    contract {
-        callsInPlace(executable, UNKNOWN)
-    }
-
-    return Assertions.assertTimeoutPreemptively(timeout, executable)
-}
+fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R =
+    Assertions.assertTimeoutPreemptively(timeout, executable)
 
 /**
  * Example usage:
@@ -534,13 +518,8 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, executable: () -> R): R {
  * @param R the result of the [executable].
  */
 @API(status = EXPERIMENTAL, since = "5.5")
-fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable: () -> R): R {
-    contract {
-        callsInPlace(executable, UNKNOWN)
-    }
-
-    return Assertions.assertTimeoutPreemptively(timeout, executable, message)
-}
+fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable: () -> R): R =
+    Assertions.assertTimeoutPreemptively(timeout, executable, message)
 
 /**
  * Example usage:
@@ -555,7 +534,6 @@ fun <R> assertTimeoutPreemptively(timeout: Duration, message: String, executable
 @API(status = EXPERIMENTAL, since = "5.5")
 fun <R> assertTimeoutPreemptively(timeout: Duration, message: () -> String, executable: () -> R): R {
     contract {
-        callsInPlace(executable, UNKNOWN)
         callsInPlace(message, AT_MOST_ONCE)
     }
 
