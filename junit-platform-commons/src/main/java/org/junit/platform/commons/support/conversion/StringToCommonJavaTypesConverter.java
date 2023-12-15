@@ -8,7 +8,7 @@
  * https://www.eclipse.org/legal/epl-v20.html
  */
 
-package org.junit.jupiter.params.converter;
+package org.junit.platform.commons.support.conversion;
 
 import static java.util.Collections.unmodifiableMap;
 
@@ -63,7 +63,7 @@ class StringToCommonJavaTypesConverter implements StringToObjectConverter {
 			return URI.create(url).toURL();
 		}
 		catch (MalformedURLException ex) {
-			throw new ArgumentConversionException("Failed to convert String \"" + url + "\" to type java.net.URL", ex);
+			throw new ConversionException("Failed to convert String \"" + url + "\" to type java.net.URL", ex);
 		}
 	}
 

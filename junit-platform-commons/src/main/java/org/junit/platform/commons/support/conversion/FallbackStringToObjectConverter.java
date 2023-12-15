@@ -8,7 +8,7 @@
  * https://www.eclipse.org/legal/epl-v20.html
  */
 
-package org.junit.jupiter.params.converter;
+package org.junit.platform.commons.support.conversion;
 
 import static org.junit.platform.commons.util.ReflectionUtils.HierarchyTraversalMode.BOTTOM_UP;
 import static org.junit.platform.commons.util.ReflectionUtils.findConstructors;
@@ -48,8 +48,8 @@ import org.junit.platform.commons.util.Preconditions;
  * If neither a single factory method nor a single constructor is found, this
  * converter acts as a no-op.
  *
- * @since 5.1
- * @see DefaultArgumentConverter
+ * @since 1.11
+ * @see StringConversionSupport
  */
 class FallbackStringToObjectConverter implements StringToObjectConverter {
 

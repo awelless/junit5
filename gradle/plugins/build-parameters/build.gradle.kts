@@ -15,17 +15,8 @@ buildParameters {
 		description = "Defines the Java toolchain version to use for compiling code"
 	}
 	group("buildCache") {
-		string("username") {
-			description = "Username to authenticate with the remote build cache"
-			fromEnvironment()
-		}
-		string("password") {
-			description = "Password to authenticate with the remote build cache"
-			fromEnvironment()
-		}
-		string("url") {
-			description = "URL to the remote build cache"
-			fromEnvironment()
+		string("server") {
+			description = "Remote build cache server address (protocol and hostname), e.g. https://eu-build-cache-ge.junit.org"
 		}
 	}
 	group("documentation") {
@@ -35,7 +26,7 @@ buildParameters {
 			defaultValue = false
 		}
 	}
-	group("enterprise") {
+	group("develocity") {
 		description = "Parameters controlling Gradle Enterprise features"
 		group("predictiveTestSelection") {
 			bool("enabled") {
@@ -70,6 +61,11 @@ buildParameters {
 		}
 		integer("retries") {
 			description = "Configures the number of times failing test are retried"
+		}
+	}
+	group("publishing") {
+		bool("signArtifacts") {
+			description = "Sign artifacts before publishing them to Maven repos"
 		}
 	}
 }

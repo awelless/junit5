@@ -11,6 +11,7 @@ plugins {
 	alias(libs.plugins.asciidoctorConvert)
 	alias(libs.plugins.asciidoctorPdf)
 	alias(libs.plugins.gitPublish)
+	alias(libs.plugins.plantuml)
 	id("junitbuild.build-parameters")
 	id("junitbuild.kotlin-library-conventions")
 	id("junitbuild.testing-conventions")
@@ -63,8 +64,7 @@ dependencies {
 
 asciidoctorj {
 	modules {
-		diagram.use()
-		pdf.version(libs.versions.asciidoctor.pdf)
+		pdf.version(libs.versions.asciidoctorj.pdf)
 	}
 	requires(file("src/docs/asciidoc/resources/themes/rouge_junit.rb"))
 }
@@ -207,6 +207,13 @@ tasks {
 		outputFile = standaloneConsoleLauncherShadowedArtifactsFile
 	}
 
+	plantUml {
+		fileFormat = "SVG"
+		outputs.cacheIf { true }
+	}
+
+	val componentDiagram = plantUml.flatMap { it.outputDirectory.file("component-diagram.svg") }
+
 	withType<AbstractAsciidoctorTask>().configureEach {
 		inputs.files(
 			generateConsoleLauncherOptions,
@@ -215,13 +222,17 @@ tasks {
 			generateConsoleLauncherEnginesOptions,
 			generateExperimentalApisTable,
 			generateDeprecatedApisTable,
-			generateStandaloneConsoleLauncherShadowedArtifactsFile
+			generateStandaloneConsoleLauncherShadowedArtifactsFile,
+			componentDiagram
 		)
 
 		resources {
 			from(sourceDir) {
 				include("**/images/**/*.png")
 				include("**/images/**/*.svg")
+			}
+			from(componentDiagram) {
+				into("user-guide/images")
 			}
 		}
 

@@ -10,9 +10,7 @@ on:
       - '*'
 
 env:
-  ENTERPRISE_TESTDISTRIBUTION_ENABLED: true
-  BUILDCACHE_USERNAME: ${{ secrets.BUILD_CACHE_USERNAME }}
-  BUILDCACHE_PASSWORD: ${{ secrets.BUILD_CACHE_PASSWORD }}
+  DEVELOCITY_TESTDISTRIBUTION_ENABLED: true
   GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
 
 jobs:
@@ -20,12 +18,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jdk: [20, 21, 22]
+        jdk: [22]
     name: "OpenJDK ${{ matrix.jdk }}"
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Set up Test JDK

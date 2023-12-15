@@ -6,8 +6,8 @@
 *Scope:* ❓
 
 For a complete list of all _closed_ issues and pull requests for this release, consult the
-link:{junit5-repo}+/milestone/68?closed=1+[5.11.0-M1] milestone page in the
-JUnit repository on GitHub.
+link:{junit5-repo}+/milestone/68?closed=1+[5.11.0-M1] milestone page in the JUnit
+repository on GitHub.
 
 
 [[release-notes-5.11.0-M1-junit-platform]]
@@ -15,7 +15,9 @@ JUnit repository on GitHub.
 
 ==== Bug Fixes
 
-* ❓
+* Allow `junit-platform-launcher` to be used as a Java module when
+  `junit.platform.launcher.interceptors.enabled` is set to `true`.
+  - See link:https://github.com/junit-team/junit5/issues/3561[issue 3561] for details.
 
 ==== Deprecations and Breaking Changes
 
@@ -23,7 +25,12 @@ JUnit repository on GitHub.
 
 ==== New Features and Improvements
 
-* Introduced kotlin contracts for kotlin assertion methods
+* New `StringConversionSupport` in `junit-platform-commons` to expose internal conversion
+  logic used by Jupiter's `DefaultArgumentConverter` for use in third-party extensions and
+  test engines.
+* Error messages for type mismatches in `NamespacedHierarchicalStore` now include the
+  actual type and value in addition to the required type.
+* Introduced kotlin contracts for kotlin assertion methods.
 
 [[release-notes-5.11.0-M1-junit-jupiter]]
 === JUnit Jupiter
@@ -34,7 +41,7 @@ JUnit repository on GitHub.
 
 ==== Deprecations and Breaking Changes
 
-* Change used Kotlin API and language version from 1.3 to 1.6
+* Change used Kotlin API and language version from 1.3 to 1.6.
 
 ==== New Features and Improvements
 

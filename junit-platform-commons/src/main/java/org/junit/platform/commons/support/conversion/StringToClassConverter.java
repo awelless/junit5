@@ -8,7 +8,7 @@
  * https://www.eclipse.org/legal/epl-v20.html
  */
 
-package org.junit.jupiter.params.converter;
+package org.junit.platform.commons.support.conversion;
 
 import org.junit.platform.commons.util.ReflectionUtils;
 
@@ -28,7 +28,7 @@ class StringToClassConverter implements StringToObjectConverter {
 	public Object convert(String className, Class<?> targetType, ClassLoader classLoader) throws Exception {
 		// @formatter:off
 		return ReflectionUtils.tryToLoadClass(className, classLoader)
-				.getOrThrow(cause -> new ArgumentConversionException(
+				.getOrThrow(cause -> new ConversionException(
 						"Failed to convert String \"" + className + "\" to type java.lang.Class", cause));
 		// @formatter:on
 	}

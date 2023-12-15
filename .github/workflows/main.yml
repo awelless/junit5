@@ -10,9 +10,7 @@ on:
       - '*'
 
 env:
-  ENTERPRISE_TESTDISTRIBUTION_ENABLED: true
-  BUILDCACHE_USERNAME: ${{ secrets.BUILD_CACHE_USERNAME }}
-  BUILDCACHE_PASSWORD: ${{ secrets.BUILD_CACHE_PASSWORD }}
+  DEVELOCITY_TESTDISTRIBUTION_ENABLED: true
   GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
 
 jobs:
@@ -20,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
     - name: Install Graphviz
@@ -31,12 +29,13 @@ jobs:
       uses: graalvm/setup-graalvm@v1
       with:
         version: 'latest'
-        java-version: '17'
+        java-version: '21'
         components: 'native-image'
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build
       uses: ./.github/actions/main-build
       with:
+        dependency-graph: generate-and-submit
         arguments: |
           -Ptesting.enableJaCoCo
           build
@@ -49,7 +48,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
     - name: Build
@@ -59,7 +58,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
     - name: Build
@@ -72,7 +71,7 @@ jobs:
     if: github.event_name == 'push' && github.repository == 'junit-team/junit5' && (startsWith(github.ref, 'refs/heads/releases/') || github.ref == 'refs/heads/main')
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
     - name: Publish
@@ -93,18 +92,16 @@ jobs:
     if: github.event_name == 'push' && github.repository == 'junit-team/junit5' && github.ref == 'refs/heads/main'
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
     - name: Install Graphviz
       run: |
         sudo apt-get update
         sudo apt-get install graphviz
-    - name: Restore Gradle cache and display toolchains
+    - name: Upload Documentation
       uses: ./.github/actions/run-gradle
       with:
-        arguments: --quiet
-    - name: Upload Documentation
+        arguments: gitPublishPush -Dscan.tag.Documentation
       env:
         GRGIT_USER: ${{ secrets.GH_TOKEN }}
-      run: ./gradle/scripts/publishDocumentationSnapshotOnlyIfNecessary.sh
